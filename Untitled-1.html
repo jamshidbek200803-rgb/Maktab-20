@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maktab - Bosh sahifa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(147, 51, 234, 0.9) 50%, rgba(236, 72, 153, 0.9) 100%), 
+                        url('MAKTAB_RASMI_JOYI.jpg'); /* <-- SHU JOYGA MAKTAB RASMINI QO'YING */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Agar rasim yo'q bo'lsa, zaxira rang */
+        .gradient-bg-fallback {
+            background: linear-gradient(135deg, #3b82f6 0%, #9333ea 50%, #ec4899 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+        }
+        
+        .timetable-cell {
+            transition: background-color 0.2s ease;
+        }
+        
+        .timetable-cell:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .day-header {
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+        }
+        
+        .grade-btn {
+            background-color: white;
+            color: #6b7280;
+        }
+        
+        .grade-btn:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .grade-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        
+        .student-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 font-sans min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">🏫 Maktab</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-2">
+                        <a href="#home" onclick="showSection('home')" class="nav-link bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">Bosh sahifa</a>
+                        <a href="#timetable" onclick="showSection('timetable')" class="nav-link text-gray-600 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300">Dars jadvali</a>
+                        <a href="#teachers" onclick="showSection('teachers')" class="nav-link text-gray-600 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300">O'qituvchilar</a>
+                        <a href="#classes" onclick="showSection('classes')" class="nav-link text-gray-600 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300">Sinflar</a>
+                        <a href="#login" onclick="showSection('login')" class="nav-link text-gray-600 hover:text-white hover:bg-gradient-to-r hover:from-green-500 hover:to-blue-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300">🔐 Kirish</a>
+                        <a href="#admin" onclick="showSection('admin')" class="nav-link text-gray-600 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300">ADMIN</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+                <a href="#home" onclick="showSection('home'); toggleMobileMenu()" class="block px-3 py-2 text-indigo-600 font-medium">Bosh sahifa</a>
+                <a href="#timetable" onclick="showSection('timetable'); toggleMobileMenu()" class="block px-3 py-2 text-gray-600 hover:text-indigo-600">Dars jadvali</a>
+                <a href="#teachers" onclick="showSection('teachers'); toggleMobileMenu()" class="block px-3 py-2 text-gray-600 hover:text-indigo-600">O'qituvchilar</a>
+                <a href="#classes" onclick="showSection('classes'); toggleMobileMenu()" class="block px-3 py-2 text-gray-600 hover:text-indigo-600">Sinflar</a>
+                <a href="#login" onclick="showSection('login'); toggleMobileMenu()" class="block px-3 py-2 text-gray-600 hover:text-indigo-600">🔐 Kirish</a>
+                <a href="#admin" onclick="showSection('admin'); toggleMobileMenu()" class="block px-3 py-2 text-gray-600 hover:text-indigo-600">ADMIN</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home-section" class="section">
+        <!-- Hero Section -->
+        <div class="gradient-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">Maktab veb-saytiga xush kelibsiz</h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">Zamonaviy ta'lim, yorqin kelajak</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showSection('timetable')" class="bg-white/90 backdrop-blur-sm text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white hover:scale-105 transition-all duration-300 shadow-2xl border border-white/20">
+                        📅 Dars jadvalini ko'rish
+                    </button>
+                    <button onclick="showVideoModal()" class="bg-gradient-to-r from-pink-500 to-red-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:from-pink-600 hover:to-red-700 hover:scale-105 transition-all duration-300 shadow-2xl">
+                        🎥 Video ko'rish
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teachers Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Bizning o'qituvchilar</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="teachers-grid">
+                <!-- Teachers will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white/70 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-white/20 hover:scale-105 transition-all duration-300">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">500+</div>
+                        <div class="text-gray-700 font-medium">👨‍🎓 O'quvchilar</div>
+                    </div>
+                    <div class="bg-white/70 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-white/20 hover:scale-105 transition-all duration-300">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">30+</div>
+                        <div class="text-gray-700 font-medium">👨‍🏫 O'qituvchilar</div>
+                    </div>
+                    <div class="bg-white/70 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-white/20 hover:scale-105 transition-all duration-300">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-3">33</div>
+                        <div class="text-gray-700 font-medium">🏫 Sinflar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timetable Section -->
+    <div id="timetable-section" class="section hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Dars jadvali</h2>
+            
+            <!-- Class Selector -->
+            <div class="mb-8">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Sinfni tanlang:</label>
+                <select id="class-selector" onchange="loadTimetable()" class="block w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Sinfni tanlang...</option>
+                </select>
+            </div>
+
+            <!-- Timetable -->
+            <div id="timetable-container" class="hidden">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="px-6 py-4 bg-indigo-600 text-white">
+                        <h3 class="text-xl font-semibold" id="selected-class">Sinf jadvali</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kun</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vaqt</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">O'qituvchi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timetable-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Timetable rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teachers Section -->
+    <div id="teachers-section" class="section hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Barcha o'qituvchilar</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="all-teachers-grid">
+                <!-- All teachers will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Classes Section -->
+    <div id="classes-section" class="section hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Maktab sinflari</h2>
+            
+            <!-- Grade Selector -->
+            <div class="mb-8 text-center">
+                <div class="inline-flex flex-wrap gap-2 bg-gray-100 p-2 rounded-lg">
+                    <button onclick="showGrade('all')" class="grade-btn active px-4 py-2 rounded-md font-medium transition-colors">Barcha sinflar</button>
+                    <button onclick="showGrade(1)" class="grade-btn px-4 py-2 rounded-md font-medium transition-colors">1-4 sinflar</button>
+                    <button onclick="showGrade(5)" class="grade-btn px-4 py-2 rounded-md font-medium transition-colors">5-8 sinflar</button>
+                    <button onclick="showGrade(9)" class="grade-btn px-4 py-2 rounded-md font-medium transition-colors">9-11 sinflar</button>
+                </div>
+            </div>
+
+            <!-- Classes Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="classes-grid">
+                <!-- Classes will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Login Section -->
+    <div id="login-section" class="section hidden">
+        <!-- Teacher Login Form -->
+        <div id="teacher-login" class="max-w-md mx-auto mt-20">
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent text-center mb-6">👨‍🏫 O'qituvchi Kirish</h2>
+                <form onsubmit="teacherLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email:</label>
+                        <input type="email" id="teacher-email" placeholder="email@maktab.uz" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Parol:</label>
+                        <input type="password" id="teacher-password" placeholder="Parolingizni kiriting" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500" required>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-2 px-4 rounded-md hover:from-green-700 hover:to-blue-700 transition-all duration-300 shadow-lg">
+                        Kirish
+                    </button>
+                </form>
+                <div id="teacher-login-error" class="mt-4 text-red-600 text-sm text-center hidden">
+                    Email yoki parol noto'g'ri!
+                </div>
+                <div class="mt-4 text-center text-sm text-gray-600">
+                    <p>Demo uchun:</p>
+                    <p><strong>Email:</strong> aziza@maktab.uz</p>
+                    <p><strong>Parol:</strong> 123456</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher Dashboard -->
+        <div id="teacher-dashboard" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900" id="teacher-welcome">O'qituvchi paneli</h2>
+                    <p class="text-gray-600" id="teacher-subtitle">Shaxsiy ma'lumotlar va dars jadvali</p>
+                </div>
+                <button onclick="teacherLogout()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                    Chiqish
+                </button>
+            </div>
+
+            <!-- Teacher Info Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-green-500 to-blue-600 text-white p-6 rounded-2xl shadow-xl">
+                    <div class="text-3xl mb-2">💰</div>
+                    <div class="text-2xl font-bold" id="teacher-salary">0 so'm</div>
+                    <div class="text-sm opacity-90">Oylik maosh</div>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-6 rounded-2xl shadow-xl">
+                    <div class="text-3xl mb-2">📚</div>
+                    <div class="text-2xl font-bold" id="teacher-subjects-count">0</div>
+                    <div class="text-sm opacity-90">Fanlar soni</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-pink-600 text-white p-6 rounded-2xl shadow-xl">
+                    <div class="text-3xl mb-2">🏫</div>
+                    <div class="text-2xl font-bold" id="teacher-classes-count">0</div>
+                    <div class="text-sm opacity-90">Sinflar soni</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-red-600 text-white p-6 rounded-2xl shadow-xl">
+                    <div class="text-3xl mb-2">⏰</div>
+                    <div class="text-2xl font-bold" id="teacher-lessons-count">0</div>
+                    <div class="text-sm opacity-90">Haftalik darslar</div>
+                </div>
+            </div>
+
+            <!-- Teacher Details and Schedule -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Personal Info -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">👤 Shaxsiy ma'lumotlar</h3>
+                    <div id="teacher-personal-info" class="space-y-3">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Weekly Schedule -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">📅 Haftalik jadval</h3>
+                    <div id="teacher-schedule" class="space-y-2">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes Taught -->
+            <div class="mt-8 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">🎓 Dars beradigan sinflar</h3>
+                <div id="teacher-classes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Section -->
+    <div id="admin-section" class="section hidden">
+        <!-- Login Form -->
+        <div id="admin-login" class="max-w-md mx-auto mt-20">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold text-gray-900 text-center mb-6">🔐 Admin Panel</h2>
+                <form onsubmit="adminLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Login:</label>
+                        <input type="text" id="admin-username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Parol:</label>
+                        <input type="password" id="admin-password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                        Kirish
+                    </button>
+                </form>
+                <div id="login-error" class="mt-4 text-red-600 text-sm text-center hidden">
+                    Login yoki parol noto'g'ri!
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-dashboard" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Admin Panel</h2>
+                <div class="flex space-x-4">
+                    <button onclick="showLoginSettings()" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors">
+                        Login va Parol
+                    </button>
+                    <button onclick="adminLogout()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                        Chiqish
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Menu -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <button onclick="showAddStudent()" class="bg-blue-600 text-white p-6 rounded-lg hover:bg-blue-700 transition-colors">
+                    <div class="text-3xl mb-2">👨‍🎓</div>
+                    <div class="font-semibold">O'quvchi qo'shish</div>
+                </button>
+                <button onclick="showAddTeacher()" class="bg-green-600 text-white p-6 rounded-lg hover:bg-green-700 transition-colors">
+                    <div class="text-3xl mb-2">👨‍🏫</div>
+                    <div class="font-semibold">O'qituvchi qo'shish</div>
+                </button>
+                <button onclick="showEditTimetable()" class="bg-purple-600 text-white p-6 rounded-lg hover:bg-purple-700 transition-colors">
+                    <div class="text-3xl mb-2">📅</div>
+                    <div class="font-semibold">Dars jadvali o'zgartirish</div>
+                </button>
+                <button onclick="showManageData()" class="bg-orange-600 text-white p-6 rounded-lg hover:bg-orange-700 transition-colors">
+                    <div class="text-3xl mb-2">📊</div>
+                    <div class="font-semibold">Ma'lumotlarni boshqarish</div>
+                </button>
+            </div>
+
+            <!-- Admin Content Area -->
+            <div id="admin-content" class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-center text-gray-500">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <p>Yuqoridagi tugmalardan birini tanlang</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Modal -->
+    <div id="student-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-md w-full max-h-96 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-gray-900" id="modal-title">O'quvchi ma'lumotlari</h3>
+                    <button onclick="closeStudentModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modal-content">
+                    <!-- Student details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timetable Modal -->
+    <div id="timetable-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-96 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-bold text-gray-900" id="timetable-modal-title">Dars jadvali</h3>
+                    <button onclick="closeTimetableModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="timetable-modal-content">
+                    <!-- Timetable will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-90 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-6xl w-full max-h-full overflow-hidden">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold text-gray-900">🏫 20-son maktab haqida</h3>
+                    <button onclick="closeVideoModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Video Slider -->
+                <div class="relative">
+                    <div id="video-slider" class="overflow-hidden rounded-lg">
+                        <div class="flex transition-transform duration-500 ease-in-out" id="slider-container">
+                            <!-- Slide 1 -->
+                            <div class="w-full flex-shrink-0 bg-gradient-to-br from-blue-600 to-purple-700 text-white p-8 text-center">
+                                <div class="text-6xl mb-4">🏆</div>
+                                <h4 class="text-3xl font-bold mb-4">20-son maktab</h4>
+                                <p class="text-xl mb-6">Shahar eng yaxshi maktablaridan biri</p>
+                                <p class="text-lg opacity-90">Bizning maktab 1985-yilda tashkil etilgan va bugungi kunga qadar minglab o'quvchilarni hayotga tayyorlagan</p>
+                            </div>
+                            
+                            <!-- Slide 2 -->
+                            <div class="w-full flex-shrink-0 bg-gradient-to-br from-green-600 to-blue-600 text-white p-8 text-center">
+                                <div class="text-6xl mb-4">📚</div>
+                                <h4 class="text-3xl font-bold mb-4">Sifatli ta'lim</h4>
+                                <p class="text-xl mb-6">Zamonaviy o'qitish usullari</p>
+                                <p class="text-lg opacity-90">Bizda eng malakali o'qituvchilar ishlaydi va har bir o'quvchiga individual yondashuv qo'llaniladi</p>
+                            </div>
+                            
+                            <!-- Slide 3 -->
+                            <div class="w-full flex-shrink-0 bg-gradient-to-br from-purple-600 to-pink-600 text-white p-8 text-center">
+                                <div class="text-6xl mb-4">🎯</div>
+                                <h4 class="text-3xl font-bold mb-4">Yuqori natijalar</h4>
+                                <p class="text-xl mb-6">O'quvchilarimiz doimo yuqori o'rinlarda</p>
+                                <p class="text-lg opacity-90">Har yili o'quvchilarimiz respublika va xalqaro olimpiadalarda g'olib bo'lishadi</p>
+                            </div>
+                            
+                            <!-- Slide 4 -->
+                            <div class="w-full flex-shrink-0 bg-gradient-to-br from-orange-600 to-red-600 text-white p-8 text-center">
+                                <div class="text-6xl mb-4">🌟</div>
+                                <h4 class="text-3xl font-bold mb-4">Kuchli jamoa</h4>
+                                <p class="text-xl mb-6">Tajribali o'qituvchilar jamoasi</p>
+                                <p class="text-lg opacity-90">30 dan ortiq malakali o'qituvchi va 500 dan ortiq faol o'quvchi</p>
+                            </div>
+                            
+                            <!-- Slide 5 -->
+                            <div class="w-full flex-shrink-0 bg-gradient-to-br from-teal-600 to-green-600 text-white p-8 text-center">
+                                <div class="text-6xl mb-4">🚀</div>
+                                <h4 class="text-3xl font-bold mb-4">Kelajak uchun</h4>
+                                <p class="text-xl mb-6">Zamonaviy texnologiyalar</p>
+                                <p class="text-lg opacity-90">Maktabimizda eng so'nggi texnologiyalar va innovatsion o'qitish usullari qo'llaniladi</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation buttons -->
+                    <button onclick="previousSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button onclick="nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Slide indicators -->
+                    <div class="flex justify-center mt-4 space-x-2">
+                        <button onclick="goToSlide(0)" class="slide-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all"></button>
+                        <button onclick="goToSlide(1)" class="slide-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all"></button>
+                        <button onclick="goToSlide(2)" class="slide-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all"></button>
+                        <button onclick="goToSlide(3)" class="slide-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all"></button>
+                        <button onclick="goToSlide(4)" class="slide-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-75 transition-all"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin credentials
+        let adminCredentials = {
+            username: 'Jamshidbek',
+            password: '12345'
+        };
+        
+        let isAdminLoggedIn = false;
+        let isTeacherLoggedIn = false;
+        let currentTeacher = null;
+
+        // Teacher credentials and additional data
+        const teacherCredentials = {
+            'aziza@maktab.uz': '123456',
+            'bobur@maktab.uz': '123456',
+            'dilnoza@maktab.uz': '123456',
+            'eldor@maktab.uz': '123456',
+            'feruza@maktab.uz': '123456'
+        };
+
+        // Sample data (in real Django app, this would come from your backend)
+        const teachers = [
+            { id: 1, full_name: "Aziza Karimova", email: "aziza@maktab.uz", subjects: "Matematika, Fizika", isNew: false, salary: 8500000, experience: 12, age: 35, phone: "+998 90 123 45 67" },
+            { id: 2, full_name: "Bobur Toshmatov", email: "bobur@maktab.uz", subjects: "O'zbek tili, Adabiyot", isNew: false, salary: 7800000, experience: 8, age: 32, phone: "+998 91 234 56 78" },
+            { id: 3, full_name: "Dilnoza Rahimova", email: "dilnoza@maktab.uz", subjects: "Ingliz tili", isNew: false, salary: 9200000, experience: 15, age: 38, phone: "+998 93 345 67 89" },
+            { id: 4, full_name: "Eldor Nazarov", email: "eldor@maktab.uz", subjects: "Tarix, Geografiya", isNew: false, salary: 7500000, experience: 6, age: 29, phone: "+998 94 456 78 90" },
+            { id: 5, full_name: "Feruza Abdullayeva", email: "feruza@maktab.uz", subjects: "Kimyo, Biologiya", isNew: false, salary: 8800000, experience: 10, age: 33, phone: "+998 95 567 89 01" },
+            { id: 6, full_name: "Gafur Saidov", email: "gafur@maktab.uz", subjects: "Jismoniy tarbiya", isNew: false },
+            { id: 7, full_name: "Hilola Yusupova", email: "hilola@maktab.uz", subjects: "Matematika", isNew: false },
+            { id: 8, full_name: "Islom Mahmudov", email: "islom@maktab.uz", subjects: "Informatika", isNew: false },
+            { id: 9, full_name: "Jasur Hasanov", email: "jasur@maktab.uz", subjects: "Fizika", isNew: false },
+            { id: 10, full_name: "Kamola Aliyeva", email: "kamola@maktab.uz", subjects: "O'zbek tili", isNew: false },
+            { id: 11, full_name: "Laziz Qosimov", email: "laziz@maktab.uz", subjects: "Ingliz tili", isNew: false },
+            { id: 12, full_name: "Madina Ergasheva", email: "madina@maktab.uz", subjects: "Kimyo", isNew: false },
+            { id: 13, full_name: "Nodir Nematov", email: "nodir@maktab.uz", subjects: "Biologiya", isNew: false },
+            { id: 14, full_name: "Oybek Sharipov", email: "oybek@maktab.uz", subjects: "Tarix", isNew: false },
+            { id: 15, full_name: "Parvina Tursunova", email: "parvina@maktab.uz", subjects: "Geografiya", isNew: false },
+            { id: 16, full_name: "Qodira Karimova", email: "qodira@maktab.uz", subjects: "Adabiyot", isNew: false },
+            { id: 17, full_name: "Rustam Nazarov", email: "rustam@maktab.uz", subjects: "Jismoniy tarbiya", isNew: false },
+            { id: 18, full_name: "Sevara Abdullayeva", email: "sevara@maktab.uz", subjects: "Musiqa", isNew: false },
+            { id: 19, full_name: "Temur Saidov", email: "temur@maktab.uz", subjects: "Tasviriy san'at", isNew: false },
+            { id: 20, full_name: "Umida Yusupova", email: "umida@maktab.uz", subjects: "Rus tili", isNew: false },
+            { id: 21, full_name: "Vali Mahmudov", email: "vali@maktab.uz", subjects: "Matematika", isNew: false },
+            { id: 22, full_name: "Yulduz Hasanova", email: "yulduz@maktab.uz", subjects: "Ingliz tili", isNew: false },
+            { id: 23, full_name: "Zarina Aliyeva", email: "zarina@maktab.uz", subjects: "Kimyo, Biologiya", isNew: false },
+            { id: 24, full_name: "Akmal Qosimov", email: "akmal@maktab.uz", subjects: "Fizika", isNew: false },
+            { id: 25, full_name: "Barno Ergasheva", email: "barno@maktab.uz", subjects: "O'zbek tili", isNew: false },
+            { id: 26, full_name: "Davron Nematov", email: "davron@maktab.uz", subjects: "Informatika", isNew: false },
+            { id: 27, full_name: "Ezoza Sharipova", email: "ezoza@maktab.uz", subjects: "Tarix, Geografiya", isNew: false },
+            { id: 28, full_name: "Farrux Tursunov", email: "farrux@maktab.uz", subjects: "Jismoniy tarbiya", isNew: false },
+            { id: 29, full_name: "Gulnora Karimova", email: "gulnora@maktab.uz", subjects: "Adabiyot", isNew: false },
+            { id: 30, full_name: "Husniddin Nazarov", email: "husniddin@maktab.uz", subjects: "Musiqa", isNew: false }
+        ];
+
+        // Generate classrooms with random supervisors
+        function generateClassrooms() {
+            const supervisorNames = [
+                "Aziza Karimova", "Bobur Toshmatov", "Dilnoza Rahimova", "Eldor Nazarov", 
+                "Feruza Abdullayeva", "Gafur Saidov", "Hilola Yusupova", "Islom Mahmudov", 
+                "Jasur Hasanov", "Kamola Aliyeva", "Laziz Qosimov", "Madina Ergasheva", 
+                "Nodir Nematov", "Oybek Sharipov", "Parvina Tursunova", "Qodira Karimova",
+                "Rustam Nazarov", "Sevara Abdullayeva", "Temur Saidov", "Umida Yusupova",
+                "Vali Mahmudov", "Yulduz Hasanova", "Zarina Aliyeva", "Akmal Qosimov",
+                "Barno Ergasheva", "Davron Nematov", "Ezoza Sharipova", "Farrux Tursunov",
+                "Gulnora Karimova", "Husniddin Nazarov", "Iroda Abdullayeva", "Javohir Saidov",
+                "Komila Yusupova"
+            ];
+            
+            const baseClasses = [
+                { id: 1, name: "1A", grade: 1 }, { id: 2, name: "1B", grade: 1 }, { id: 3, name: "1D", grade: 1 },
+                { id: 4, name: "2A", grade: 2 }, { id: 5, name: "2B", grade: 2 }, { id: 6, name: "2D", grade: 2 },
+                { id: 7, name: "3A", grade: 3 }, { id: 8, name: "3B", grade: 3 }, { id: 9, name: "3D", grade: 3 },
+                { id: 10, name: "4A", grade: 4 }, { id: 11, name: "4B", grade: 4 }, { id: 12, name: "4D", grade: 4 },
+                { id: 13, name: "5A", grade: 5 }, { id: 14, name: "5B", grade: 5 }, { id: 15, name: "5D", grade: 5 },
+                { id: 16, name: "6A", grade: 6 }, { id: 17, name: "6B", grade: 6 }, { id: 18, name: "6D", grade: 6 },
+                { id: 19, name: "7A", grade: 7 }, { id: 20, name: "7B", grade: 7 }, { id: 21, name: "7D", grade: 7 },
+                { id: 22, name: "8A", grade: 8 }, { id: 23, name: "8B", grade: 8 }, { id: 24, name: "8D", grade: 8 },
+                { id: 25, name: "9A", grade: 9 }, { id: 26, name: "9B", grade: 9 }, { id: 27, name: "9D", grade: 9 },
+                { id: 28, name: "10A", grade: 10 }, { id: 29, name: "10B", grade: 10 }, { id: 30, name: "10D", grade: 10 },
+                { id: 31, name: "11A", grade: 11 }, { id: 32, name: "11B", grade: 11 }, { id: 33, name: "11D", grade: 11 }
+            ];
+            
+            return baseClasses.map(classroom => ({
+                ...classroom,
+                supervisor: supervisorNames[Math.floor(Math.random() * supervisorNames.length)]
+            }));
+        }
+        
+        const classrooms = generateClassrooms();
+
+        // Generate students for each class
+        const firstNames = ["Aziz", "Bobur", "Dilnoza", "Eldor", "Feruza", "Gafur", "Hilola", "Islom", "Jasur", "Kamola", "Laziz", "Madina", "Nodir", "Oybek", "Parvina", "Qodira", "Rustam", "Sevara", "Temur", "Umida", "Vali", "Yulduz", "Zarina", "Akmal", "Barno"];
+        const lastNames = ["Karimov", "Toshmatov", "Rahimova", "Nazarov", "Abdullayeva", "Saidov", "Yusupova", "Mahmudov", "Hasanova", "Aliyev", "Qosimova", "Ergashev", "Nematova", "Sharipov", "Tursunova"];
+        
+        const subjects = ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"];
+        
+        function generateStudents() {
+            const allStudents = {};
+            
+            classrooms.forEach(classroom => {
+                const studentCount = Math.floor(Math.random() * 21) + 20; // 20-40 students
+                const students = [];
+                
+                for (let i = 0; i < studentCount; i++) {
+                    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                    const age = classroom.grade + 6 + Math.floor(Math.random() * 2); // Age based on grade
+                    
+                    // Generate random grades for subjects
+                    const grades = {};
+                    const strongSubjects = [];
+                    const weakSubjects = [];
+                    
+                    subjects.forEach(subject => {
+                        const grade = Math.floor(Math.random() * 5) + 1; // 1-5 grade system
+                        grades[subject] = grade;
+                        
+                        if (grade >= 4) strongSubjects.push(subject);
+                        if (grade <= 2) weakSubjects.push(subject);
+                    });
+                    
+                    students.push({
+                        id: i + 1,
+                        firstName,
+                        lastName,
+                        fullName: `${firstName} ${lastName}`,
+                        age,
+                        grades,
+                        strongSubjects: strongSubjects.slice(0, 3), // Top 3 subjects
+                        weakSubjects: weakSubjects.slice(0, 2), // Bottom 2 subjects
+                        avatar: firstName.charAt(0) + lastName.charAt(0),
+                        isNew: false
+                    });
+                }
+                
+                allStudents[classroom.id] = students;
+            });
+            
+            return allStudents;
+        }
+        
+        const studentsData = generateStudents();
+
+        // Generate timetable data for all classes
+        function generateTimetableData() {
+            const subjects = {
+                1: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                2: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                3: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                4: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                5: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                6: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                7: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                8: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                9: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                10: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                11: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"]
+            };
+            
+            const days = [
+                { id: 1, name: "Dushanba" },
+                { id: 2, name: "Seshanba" },
+                { id: 3, name: "Chorshanba" },
+                { id: 4, name: "Payshanba" },
+                { id: 5, name: "Juma" }
+            ];
+            
+            const times = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00"];
+            
+            const timetableData = {};
+            
+            classrooms.forEach(classroom => {
+                const classSubjects = subjects[classroom.grade] || subjects[5];
+                const schedule = [];
+                
+                days.forEach(day => {
+                    let dailyLessons;
+                    // 1-4 sinflar uchun 5 dars, 5-11 sinflar uchun 5-6 dars
+                    if (classroom.grade <= 4) {
+                        dailyLessons = 5;
+                    } else {
+                        dailyLessons = Math.random() < 0.5 ? 5 : 6;
+                    }
+                    
+                    for (let i = 0; i < dailyLessons && i < times.length; i++) {
+                        const subject = classSubjects[Math.floor(Math.random() * classSubjects.length)];
+                        const availableTeachers = teachers.filter(t => t.subjects.includes(subject));
+                        const teacher = availableTeachers.length > 0 ? 
+                            availableTeachers[Math.floor(Math.random() * availableTeachers.length)] :
+                            teachers[Math.floor(Math.random() * teachers.length)];
+                        
+                        schedule.push({
+                            day: day.id,
+                            day_name: day.name,
+                            start_time: times[i],
+                            subject: subject,
+                            teacher: teacher.full_name,
+                            order: i + 1,
+                            isNew: false
+                        });
+                    }
+                });
+                
+                timetableData[classroom.id] = schedule;
+            });
+            
+            return timetableData;
+        }
+        
+        const timetableData = generateTimetableData();
+
+        // Navigation functions
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'text-white', 'shadow-lg');
+                link.classList.add('text-gray-600');
+            });
+            
+            event.target.classList.remove('text-gray-600');
+            event.target.classList.add('bg-gradient-to-r', 'from-blue-500', 'to-purple-600', 'text-white', 'shadow-lg');
+            
+            // Load section-specific data
+            if (sectionName === 'timetable') {
+                loadClassrooms();
+            } else if (sectionName === 'teachers') {
+                loadAllTeachers();
+            } else if (sectionName === 'classes') {
+                loadClasses();
+            } else if (sectionName === 'admin') {
+                loadAdminSection();
+            } else if (sectionName === 'login') {
+                loadTeacherLoginSection();
+            }
+        }
+
+        // Teacher Login Functions
+        function loadTeacherLoginSection() {
+            if (isTeacherLoggedIn) {
+                document.getElementById('teacher-login').classList.add('hidden');
+                document.getElementById('teacher-dashboard').classList.remove('hidden');
+                loadTeacherDashboard();
+            } else {
+                document.getElementById('teacher-login').classList.remove('hidden');
+                document.getElementById('teacher-dashboard').classList.add('hidden');
+            }
+        }
+
+        function teacherLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('teacher-email').value;
+            const password = document.getElementById('teacher-password').value;
+            
+            if (teacherCredentials[email] && teacherCredentials[email] === password) {
+                isTeacherLoggedIn = true;
+                currentTeacher = teachers.find(t => t.email === email);
+                document.getElementById('teacher-login-error').classList.add('hidden');
+                loadTeacherLoginSection();
+            } else {
+                document.getElementById('teacher-login-error').classList.remove('hidden');
+            }
+        }
+
+        function teacherLogout() {
+            isTeacherLoggedIn = false;
+            currentTeacher = null;
+            document.getElementById('teacher-email').value = '';
+            document.getElementById('teacher-password').value = '';
+            loadTeacherLoginSection();
+        }
+
+        function loadTeacherDashboard() {
+            if (!currentTeacher) return;
+
+            // Update welcome message
+            document.getElementById('teacher-welcome').textContent = `Salom, ${currentTeacher.full_name}!`;
+            document.getElementById('teacher-subtitle').textContent = `${currentTeacher.subjects} o'qituvchisi`;
+
+            // Calculate teacher statistics
+            const teacherSubjects = currentTeacher.subjects.split(', ');
+            const teacherLessons = getTeacherLessons(currentTeacher.full_name);
+            const teacherClasses = getTeacherClasses(currentTeacher.full_name);
+
+            // Update info cards
+            document.getElementById('teacher-salary').textContent = formatSalary(currentTeacher.salary || 7500000);
+            document.getElementById('teacher-subjects-count').textContent = teacherSubjects.length;
+            document.getElementById('teacher-classes-count').textContent = teacherClasses.length;
+            document.getElementById('teacher-lessons-count').textContent = teacherLessons.length;
+
+            // Load personal info
+            loadTeacherPersonalInfo();
+            
+            // Load schedule
+            loadTeacherSchedule();
+            
+            // Load classes
+            loadTeacherClasses();
+        }
+
+        function formatSalary(amount) {
+            return new Intl.NumberFormat('uz-UZ').format(amount) + ' so\'m';
+        }
+
+        function getTeacherLessons(teacherName) {
+            const lessons = [];
+            Object.values(timetableData).forEach(classTimetable => {
+                classTimetable.forEach(lesson => {
+                    if (lesson.teacher === teacherName) {
+                        lessons.push(lesson);
+                    }
+                });
+            });
+            return lessons;
+        }
+
+        function getTeacherClasses(teacherName) {
+            const teacherClasses = [];
+            Object.keys(timetableData).forEach(classId => {
+                const hasLessons = timetableData[classId].some(lesson => lesson.teacher === teacherName);
+                if (hasLessons) {
+                    const classroom = classrooms.find(c => c.id == classId);
+                    if (classroom) {
+                        teacherClasses.push(classroom);
+                    }
+                }
+            });
+            return teacherClasses;
+        }
+
+        function loadTeacherPersonalInfo() {
+            const info = document.getElementById('teacher-personal-info');
+            info.innerHTML = `
+                <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">To'liq ism:</span>
+                    <span class="font-medium">${currentTeacher.full_name}</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Email:</span>
+                    <span class="font-medium">${currentTeacher.email}</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Yosh:</span>
+                    <span class="font-medium">${currentTeacher.age || 30} yosh</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Tajriba:</span>
+                    <span class="font-medium">${currentTeacher.experience || 5} yil</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-gray-100">
+                    <span class="text-gray-600">Telefon:</span>
+                    <span class="font-medium">${currentTeacher.phone || '+998 90 000 00 00'}</span>
+                </div>
+                <div class="flex justify-between py-2">
+                    <span class="text-gray-600">Fanlar:</span>
+                    <span class="font-medium">${currentTeacher.subjects}</span>
+                </div>
+            `;
+        }
+
+        function loadTeacherSchedule() {
+            const schedule = document.getElementById('teacher-schedule');
+            const teacherLessons = getTeacherLessons(currentTeacher.full_name);
+            
+            // Group lessons by day
+            const lessonsByDay = {};
+            teacherLessons.forEach(lesson => {
+                if (!lessonsByDay[lesson.day_name]) {
+                    lessonsByDay[lesson.day_name] = [];
+                }
+                lessonsByDay[lesson.day_name].push(lesson);
+            });
+
+            // Sort lessons by time within each day
+            Object.keys(lessonsByDay).forEach(day => {
+                lessonsByDay[day].sort((a, b) => a.start_time.localeCompare(b.start_time));
+            });
+
+            const dayOrder = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma'];
+            
+            if (Object.keys(lessonsByDay).length === 0) {
+                schedule.innerHTML = '<p class="text-gray-500 text-center">Hozircha darslar tayinlanmagan</p>';
+                return;
+            }
+
+            schedule.innerHTML = dayOrder.map(day => {
+                const dayLessons = lessonsByDay[day] || [];
+                if (dayLessons.length === 0) return '';
+                
+                return `
+                    <div class="border rounded-lg p-3 bg-gray-50">
+                        <h4 class="font-semibold text-gray-800 mb-2">${day}</h4>
+                        <div class="space-y-1">
+                            ${dayLessons.map(lesson => {
+                                const classroom = classrooms.find(c => c.id == Object.keys(timetableData).find(classId => 
+                                    timetableData[classId].includes(lesson)
+                                ));
+                                return `
+                                    <div class="flex justify-between items-center text-sm bg-white p-2 rounded">
+                                        <span>${lesson.start_time}</span>
+                                        <span class="font-medium">${lesson.subject}</span>
+                                        <span class="text-gray-600">${classroom ? classroom.name : ''}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).filter(day => day !== '').join('');
+        }
+
+        function loadTeacherClasses() {
+            const classesContainer = document.getElementById('teacher-classes');
+            const teacherClasses = getTeacherClasses(currentTeacher.full_name);
+            
+            if (teacherClasses.length === 0) {
+                classesContainer.innerHTML = '<p class="text-gray-500 text-center col-span-full">Hozircha sinflar tayinlanmagan</p>';
+                return;
+            }
+
+            classesContainer.innerHTML = teacherClasses.map(classroom => {
+                const students = studentsData[classroom.id] || [];
+                const classLessons = timetableData[classroom.id] ? 
+                    timetableData[classroom.id].filter(lesson => lesson.teacher === currentTeacher.full_name) : [];
+                
+                return `
+                    <div class="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+                        <div class="text-center mb-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white font-bold">${classroom.name}</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-900">${classroom.name} sinfi</h4>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">O'quvchilar:</span>
+                                <span class="font-medium">${students.length} ta</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Haftalik darslar:</span>
+                                <span class="font-medium">${classLessons.length} ta</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Fanlar:</span>
+                                <span class="font-medium text-xs">${[...new Set(classLessons.map(l => l.subject))].join(', ')}</span>
+                            </div>
+                        </div>
+                        <button onclick="showClassStudents(${classroom.id})" class="w-full mt-3 bg-blue-600 text-white py-1 px-3 rounded text-sm hover:bg-blue-700 transition-colors">
+                            O'quvchilarni ko'rish
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Teachers functions
+        function loadTeachers() {
+            const grid = document.getElementById('teachers-grid');
+            const displayTeachers = teachers.slice(0, 6); // Show first 6 teachers on home page
+            
+            grid.innerHTML = displayTeachers.map(teacher => `
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover ${teacher.isNew ? 'ring-2 ring-red-500' : ''}">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-indigo-600 font-semibold text-lg">${teacher.full_name.charAt(0)}</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-lg font-semibold text-gray-900">${teacher.full_name}</h3>
+                                ${teacher.isNew ? '<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">YANGI</span>' : ''}
+                            </div>
+                            <p class="text-gray-600 text-sm">${teacher.email}</p>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <p class="text-sm text-gray-700"><strong>Fanlar:</strong> ${teacher.subjects}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadAllTeachers() {
+            const grid = document.getElementById('all-teachers-grid');
+            
+            // Sort teachers to show new ones first
+            const sortedTeachers = [...teachers].sort((a, b) => {
+                if (a.isNew && !b.isNew) return -1;
+                if (!a.isNew && b.isNew) return 1;
+                return 0;
+            });
+            
+            grid.innerHTML = sortedTeachers.map(teacher => `
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover ${teacher.isNew ? 'ring-2 ring-red-500' : ''}">
+                    <div class="text-center mb-4">
+                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-indigo-600 font-semibold text-xl">${teacher.full_name.charAt(0)}</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${teacher.full_name}</h3>
+                            ${teacher.isNew ? '<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">YANGI</span>' : ''}
+                        </div>
+                        <p class="text-gray-600 text-sm">${teacher.email}</p>
+                    </div>
+                    <div class="border-t pt-4">
+                        <p class="text-sm text-gray-700 text-center"><strong>Fanlar:</strong><br>${teacher.subjects}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Timetable functions
+        function loadClassrooms() {
+            const selector = document.getElementById('class-selector');
+            selector.innerHTML = '<option value="">Sinfni tanlang...</option>' + 
+                classrooms.map(classroom => 
+                    `<option value="${classroom.id}">${classroom.name}</option>`
+                ).join('');
+        }
+
+        function loadTimetable() {
+            const classId = document.getElementById('class-selector').value;
+            const container = document.getElementById('timetable-container');
+            const tbody = document.getElementById('timetable-body');
+            const selectedClass = document.getElementById('selected-class');
+            
+            if (!classId) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            const classroom = classrooms.find(c => c.id == classId);
+            const timetable = timetableData[classId] || [];
+            
+            selectedClass.textContent = `${classroom.name} sinfi dars jadvali`;
+            
+            // Group timetable by days
+            const groupedByDays = {};
+            timetable.forEach(slot => {
+                if (!groupedByDays[slot.day_name]) {
+                    groupedByDays[slot.day_name] = [];
+                }
+                groupedByDays[slot.day_name].push(slot);
+            });
+            
+            let timetableHTML = '';
+            Object.keys(groupedByDays).forEach(dayName => {
+                const daySlots = groupedByDays[dayName];
+                timetableHTML += `
+                    <tr class="bg-indigo-50">
+                        <td colspan="4" class="px-6 py-3 text-center font-bold text-indigo-800 text-lg">
+                            📅 ${dayName}
+                        </td>
+                    </tr>
+                `;
+                daySlots.forEach(slot => {
+                    timetableHTML += `
+                        <tr class="timetable-cell ${slot.isNew ? 'bg-green-50' : ''}">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-indigo-500 rounded-full mr-3"></div>
+                                    <span class="text-sm font-medium text-gray-600">${slot.order}-dars</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${slot.start_time}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">${slot.subject}</span>
+                                    ${slot.isNew ? '<span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">YANGI</span>' : ''}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${slot.teacher}</td>
+                        </tr>
+                    `;
+                });
+            });
+            
+            tbody.innerHTML = timetableHTML;
+            
+            if (timetable.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            Bu sinf uchun dars jadvali mavjud emas
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            container.classList.remove('hidden');
+        }
+
+        // Classes functions
+        function loadClasses() {
+            showGrade('all');
+        }
+        
+        function showGrade(gradeRange) {
+            // Update active button
+            document.querySelectorAll('.grade-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            let filteredClasses = classrooms;
+            
+            if (gradeRange !== 'all') {
+                if (gradeRange === 1) {
+                    filteredClasses = classrooms.filter(c => c.grade >= 1 && c.grade <= 4);
+                } else if (gradeRange === 5) {
+                    filteredClasses = classrooms.filter(c => c.grade >= 5 && c.grade <= 8);
+                } else if (gradeRange === 9) {
+                    filteredClasses = classrooms.filter(c => c.grade >= 9 && c.grade <= 11);
+                }
+            }
+            
+            const grid = document.getElementById('classes-grid');
+            grid.innerHTML = filteredClasses.map(classroom => {
+                const students = studentsData[classroom.id] || [];
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                        <div class="text-center mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <span class="text-white font-bold text-xl">${classroom.name}</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900">${classroom.name} sinfi</h3>
+                            <p class="text-gray-600 text-sm">${classroom.grade}-sinf</p>
+                        </div>
+                        <div class="border-t pt-4">
+                            <p class="text-sm text-gray-700 text-center mb-2">
+                                <strong>O'quvchilar soni:</strong> ${students.length}
+                            </p>
+                            <p class="text-sm text-gray-700 text-center mb-2">
+                                <strong>Sinf rahbar:</strong> ${classroom.supervisor}
+                            </p>
+                            ${students.some(s => s.isNew) ? '<p class="text-center text-green-600 font-semibold text-sm mb-2">🆕 Yangi o\'quvchilar bor!</p>' : ''}
+                            <div class="space-y-2">
+                                <button onclick="showClassStudents(${classroom.id})" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                                    O'quvchilarni ko'rish
+                                </button>
+                                <button onclick="showClassTimetableModal(${classroom.id})" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                                    📅 Dars jadvali
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function showClassStudents(classId) {
+            const classroom = classrooms.find(c => c.id === classId);
+            const students = studentsData[classId] || [];
+            
+            // Create a new page for class students
+            const classStudentsHtml = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div class="mb-6">
+                        <button onclick="showSection('classes')" class="flex items-center text-indigo-600 hover:text-indigo-800 mb-4">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Sinflarga qaytish
+                        </button>
+                        <h2 class="text-3xl font-bold text-gray-900">${classroom.name} sinfi o'quvchilari</h2>
+                        <p class="text-gray-600 mt-2">Jami ${students.length} ta o'quvchi</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        ${students.map(student => `
+                            <div class="bg-white rounded-lg shadow-md p-4 student-card ${student.isNew ? 'ring-2 ring-green-500' : ''}" onclick="showStudentDetails(${classId}, ${student.id})">
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <span class="text-white font-semibold text-sm">${student.avatar}</span>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-1 mb-1">
+                                        <h3 class="text-sm font-semibold text-gray-900">${student.fullName}</h3>
+                                        ${student.isNew ? '<span class="bg-green-500 text-white text-xs px-1 py-0.5 rounded-full">YANGI</span>' : ''}
+                                    </div>
+                                    <p class="text-xs text-gray-600">${student.age} yosh</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Hide all sections and show class students
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Create or update class students section
+            let classStudentsSection = document.getElementById('class-students-section');
+            if (!classStudentsSection) {
+                classStudentsSection = document.createElement('div');
+                classStudentsSection.id = 'class-students-section';
+                classStudentsSection.className = 'section';
+                document.body.appendChild(classStudentsSection);
+            }
+            
+            classStudentsSection.innerHTML = classStudentsHtml;
+            classStudentsSection.classList.remove('hidden');
+        }
+        
+        function showStudentDetails(classId, studentId) {
+            const students = studentsData[classId] || [];
+            const student = students.find(s => s.id === studentId);
+            
+            if (!student) return;
+            
+            const modalContent = `
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">${student.avatar}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">${student.fullName}</h3>
+                    <p class="text-gray-600">${student.age} yosh</p>
+                </div>
+                
+                <div class="space-y-4">
+                    ${student.strongSubjects.length > 0 ? `
+                        <div>
+                            <h4 class="font-semibold text-green-700 mb-2">🏆 Yaxshi fanlar:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${student.strongSubjects.map(subject => `
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                        ${subject} (${student.grades[subject]})
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${student.weakSubjects.length > 0 ? `
+                        <div>
+                            <h4 class="font-semibold text-red-700 mb-2">📚 Yaxshilanishi kerak:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${student.weakSubjects.map(subject => `
+                                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">
+                                        ${subject} (${student.grades[subject]})
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">📊 Barcha baholar:</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            ${Object.entries(student.grades).map(([subject, grade]) => `
+                                <div class="flex justify-between p-2 bg-gray-50 rounded">
+                                    <span>${subject}:</span>
+                                    <span class="font-semibold ${grade >= 4 ? 'text-green-600' : grade <= 2 ? 'text-red-600' : 'text-yellow-600'}">${grade}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modal-content').innerHTML = modalContent;
+            document.getElementById('student-modal').classList.remove('hidden');
+        }
+        
+        function closeStudentModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+        }
+
+        function showClassTimetableModal(classId) {
+            const classroom = classrooms.find(c => c.id === classId);
+            const timetable = timetableData[classId] || [];
+            
+            document.getElementById('timetable-modal-title').textContent = `${classroom.name} sinfi dars jadvali`;
+            
+            // Group timetable by days
+            const groupedByDays = {};
+            timetable.forEach(slot => {
+                if (!groupedByDays[slot.day_name]) {
+                    groupedByDays[slot.day_name] = [];
+                }
+                groupedByDays[slot.day_name].push(slot);
+            });
+            
+            let modalContent = '';
+            if (Object.keys(groupedByDays).length === 0) {
+                modalContent = '<p class="text-center text-gray-500">Bu sinf uchun dars jadvali mavjud emas</p>';
+            } else {
+                modalContent = '<div class="space-y-4">';
+                Object.keys(groupedByDays).forEach(dayName => {
+                    const daySlots = groupedByDays[dayName];
+                    modalContent += `
+                        <div class="border rounded-lg overflow-hidden">
+                            <div class="bg-indigo-600 text-white px-4 py-2 font-semibold">
+                                📅 ${dayName}
+                            </div>
+                            <div class="divide-y">
+                                ${daySlots.map(slot => `
+                                    <div class="px-4 py-3 flex justify-between items-center ${slot.isNew ? 'bg-green-50' : ''}">
+                                        <div class="flex items-center gap-3">
+                                            <span class="text-sm font-medium text-gray-600">${slot.order}-dars</span>
+                                            <span class="text-sm text-gray-900">${slot.start_time}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">${slot.subject}</span>
+                                            ${slot.isNew ? '<span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">YANGI</span>' : ''}
+                                        </div>
+                                        <span class="text-sm text-gray-700">${slot.teacher}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                modalContent += '</div>';
+            }
+            
+            document.getElementById('timetable-modal-content').innerHTML = modalContent;
+            document.getElementById('timetable-modal').classList.remove('hidden');
+        }
+
+        function closeTimetableModal() {
+            document.getElementById('timetable-modal').classList.add('hidden');
+        }
+
+        // Admin Functions
+        function loadAdminSection() {
+            if (isAdminLoggedIn) {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } else {
+                document.getElementById('admin-login').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('hidden');
+            }
+        }
+
+        function adminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                isAdminLoggedIn = true;
+                document.getElementById('login-error').classList.add('hidden');
+                loadAdminSection();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-username').value = '';
+            document.getElementById('admin-password').value = '';
+            loadAdminSection();
+        }
+
+        function showLoginSettings() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Login va Parol o'zgartirish</h3>
+                <form onsubmit="updateCredentials(event)" class="max-w-md">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yangi Login:</label>
+                        <input type="text" id="new-username" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yangi Parol:</label>
+                        <input type="password" id="new-password" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                        O'zgartirish
+                    </button>
+                </form>
+                <div id="update-success" class="mt-4 text-green-600 hidden">Login va parol muvaffaqiyatli o'zgartirildi!</div>
+            `;
+        }
+
+        function updateCredentials(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById('new-username').value;
+            const newPassword = document.getElementById('new-password').value;
+            
+            adminCredentials.username = newUsername;
+            adminCredentials.password = newPassword;
+            
+            document.getElementById('update-success').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('update-success').classList.add('hidden');
+            }, 3000);
+        }
+
+        function showAddStudent() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Yangi o'quvchi qo'shish</h3>
+                <form onsubmit="addStudent(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ism:</label>
+                        <input type="text" id="student-firstname" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Familiya:</label>
+                        <input type="text" id="student-lastname" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yosh:</label>
+                        <input type="number" id="student-age" min="6" max="18" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">JSHSHR:</label>
+                        <input type="text" id="student-jshshr" minlength="14" maxlength="14" pattern="[0-9]{14}" placeholder="14 ta raqam kiriting" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ota ismi:</label>
+                        <input type="text" id="student-father" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ona ismi:</label>
+                        <input type="text" id="student-mother" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Manzil:</label>
+                        <textarea id="student-address" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sinf:</label>
+                        <select id="student-class" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                            <option value="">Sinfni tanlang...</option>
+                            ${classrooms.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                            O'quvchi qo'shish
+                        </button>
+                    </div>
+                </form>
+                <div id="student-success" class="mt-4 text-green-600 hidden">O'quvchi muvaffaqiyatli qo'shildi!</div>
+            `;
+        }
+
+        function addStudent(event) {
+            event.preventDefault();
+            const classId = parseInt(document.getElementById('student-class').value);
+            const firstName = document.getElementById('student-firstname').value;
+            const lastName = document.getElementById('student-lastname').value;
+            const age = parseInt(document.getElementById('student-age').value);
+            
+            if (!studentsData[classId]) {
+                studentsData[classId] = [];
+            }
+            
+            const newStudent = {
+                id: studentsData[classId].length + 1,
+                firstName,
+                lastName,
+                fullName: `${firstName} ${lastName}`,
+                age,
+                jshshr: document.getElementById('student-jshshr').value,
+                father: document.getElementById('student-father').value,
+                mother: document.getElementById('student-mother').value,
+                address: document.getElementById('student-address').value,
+                grades: {},
+                strongSubjects: [],
+                weakSubjects: [],
+                avatar: firstName.charAt(0) + lastName.charAt(0),
+                isNew: true
+            };
+            
+            // Generate random grades
+            subjects.forEach(subject => {
+                const grade = Math.floor(Math.random() * 5) + 1;
+                newStudent.grades[subject] = grade;
+                if (grade >= 4) newStudent.strongSubjects.push(subject);
+                if (grade <= 2) newStudent.weakSubjects.push(subject);
+            });
+            
+            studentsData[classId].push(newStudent);
+            
+            document.getElementById('student-success').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('student-success').classList.add('hidden');
+            }, 3000);
+            
+            // Reset form
+            event.target.reset();
+        }
+
+        function showAddTeacher() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Yangi o'qituvchi qo'shish</h3>
+                <form onsubmit="addTeacher(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ism:</label>
+                        <input type="text" id="teacher-firstname" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Familiya:</label>
+                        <input type="text" id="teacher-lastname" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Yosh:</label>
+                        <input type="number" id="teacher-age" min="22" max="70" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tajriba (yil):</label>
+                        <input type="number" id="teacher-experience" min="0" max="50" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Telefon raqam:</label>
+                        <input type="tel" id="teacher-phone" placeholder="+998 00 000 00 00" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pasport seriya raqami:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="teacher-passport-series" placeholder="AB" maxlength="2" pattern="[A-Z]{2}" class="w-20 px-3 py-2 border border-gray-300 rounded-md uppercase" required>
+                            <input type="text" id="teacher-passport-number" placeholder="1234567" maxlength="7" pattern="[0-9]{7}" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" required>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fanlar:</label>
+                        <select id="teacher-subjects" multiple class="w-full px-3 py-2 border border-gray-300 rounded-md" required style="height: 120px;">
+                            <option value="Matematika">Matematika</option>
+                            <option value="O'zbek tili">O'zbek tili</option>
+                            <option value="Adabiyot">Adabiyot</option>
+                            <option value="Ingliz tili">Ingliz tili</option>
+                            <option value="Tarix">Tarix</option>
+                            <option value="Geografiya">Geografiya</option>
+                            <option value="Fizika">Fizika</option>
+                            <option value="Kimyo">Kimyo</option>
+                            <option value="Biologiya">Biologiya</option>
+                            <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Tabiatshunoslik">Tabiatshunoslik</option>
+                            <option value="Tasviriy san'at">Tasviriy san'at</option>
+                            <option value="Musiqa">Musiqa</option>
+                            <option value="Rus tili">Rus tili</option>
+                        </select>
+                        <p class="text-sm text-gray-600 mt-1">Ctrl tugmasini bosib ushlab, bir nechta fanni tanlang</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">
+                            O'qituvchi qo'shish
+                        </button>
+                    </div>
+                </form>
+                <div id="teacher-success" class="mt-4 text-green-600 hidden">O'qituvchi muvaffaqiyatli qo'shildi!</div>
+            `;
+        }
+
+        function addTeacher(event) {
+            event.preventDefault();
+            const firstName = document.getElementById('teacher-firstname').value;
+            const lastName = document.getElementById('teacher-lastname').value;
+            const fullName = `${firstName} ${lastName}`;
+            
+            const newTeacher = {
+                id: teachers.length + 1,
+                full_name: fullName,
+                email: `${firstName.toLowerCase()}@maktab.uz`,
+                subjects: document.getElementById('teacher-subjects').value,
+                age: parseInt(document.getElementById('teacher-age').value),
+                experience: parseInt(document.getElementById('teacher-experience').value),
+                phone: document.getElementById('teacher-phone').value,
+                passport: document.getElementById('teacher-passport').value,
+                isNew: true
+            };
+            
+            teachers.push(newTeacher);
+            
+            document.getElementById('teacher-success').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('teacher-success').classList.add('hidden');
+            }, 3000);
+            
+            // Reset form
+            event.target.reset();
+        }
+
+        function showEditTimetable() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">Dars jadvali o'zgartirish</h3>
+                    <button onclick="showAddLessonForm()" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                        ➕ Yangi dars qo'shish
+                    </button>
+                </div>
+                
+                <!-- Add Lesson Form (Hidden by default) -->
+                <div id="add-lesson-form" class="bg-blue-50 p-4 rounded-lg mb-4 hidden">
+                    <h4 class="font-semibold mb-3">Yangi dars qo'shish</h4>
+                    <form onsubmit="addNewLessonGlobal(event)" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sinf:</label>
+                            <select id="global-class" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Sinfni tanlang...</option>
+                                ${classrooms.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kun:</label>
+                            <select id="global-day" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="1">Dushanba</option>
+                                <option value="2">Seshanba</option>
+                                <option value="3">Chorshanba</option>
+                                <option value="4">Payshanba</option>
+                                <option value="5">Juma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Vaqt:</label>
+                            <select id="global-time" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="08:00">08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fan:</label>
+                            <select id="global-subject" onchange="loadGlobalTeachersForSubject()" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Fanni tanlang...</option>
+                                <option value="Matematika">Matematika</option>
+                                <option value="O'zbek tili">O'zbek tili</option>
+                                <option value="Adabiyot">Adabiyot</option>
+                                <option value="Ingliz tili">Ingliz tili</option>
+                                <option value="Tarix">Tarix</option>
+                                <option value="Geografiya">Geografiya</option>
+                                <option value="Fizika">Fizika</option>
+                                <option value="Kimyo">Kimyo</option>
+                                <option value="Biologiya">Biologiya</option>
+                                <option value="Jismoniy tarbiya">Jismoniy tarbiya</option>
+                                <option value="Informatika">Informatika</option>
+                                <option value="Tabiatshunoslik">Tabiatshunoslik</option>
+                                <option value="Tasviriy san'at">Tasviriy san'at</option>
+                                <option value="Musiqa">Musiqa</option>
+                                <option value="Rus tili">Rus tili</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">O'qituvchi:</label>
+                            <select id="global-teacher" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Avval fanni tanlang...</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-5">
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 mr-2">
+                                Saqlash
+                            </button>
+                            <button type="button" onclick="hideAddLessonForm()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                                Bekor qilish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Sinfni tanlang:</label>
+                    <select id="edit-class-selector" onchange="loadEditTimetable()" class="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="">Sinfni tanlang...</option>
+                        ${classrooms.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="edit-timetable-content"></div>
+            `;
+        }
+
+        function loadEditTimetable() {
+            const classId = document.getElementById('edit-class-selector').value;
+            const content = document.getElementById('edit-timetable-content');
+            
+            if (!classId) {
+                content.innerHTML = '';
+                return;
+            }
+            
+            const classroom = classrooms.find(c => c.id == classId);
+            const timetable = timetableData[classId] || [];
+            
+            content.innerHTML = `
+                <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                    <h4 class="font-semibold mb-2">${classroom.name} sinfi dars jadvali</h4>
+                    <button onclick="addNewLesson(${classId})" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mb-4">
+                        Yangi dars qo'shish
+                    </button>
+                    <div class="space-y-2">
+                        ${timetable.map((slot, index) => `
+                            <div class="bg-white p-3 rounded border flex justify-between items-center">
+                                <div>
+                                    <strong>${slot.day_name}</strong> - ${slot.start_time} - ${slot.subject} - ${slot.teacher}
+                                </div>
+                                <div class="space-x-2">
+                                    <button onclick="editLesson(${classId}, ${index})" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">
+                                        O'zgartirish
+                                    </button>
+                                    <button onclick="deleteLesson(${classId}, ${index})" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                        O'chirish
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function addNewLesson(classId) {
+            const classroom = classrooms.find(c => c.id == classId);
+            const classSubjects = getSubjectsForGrade(classroom.grade);
+            
+            const content = document.getElementById('edit-timetable-content');
+            content.innerHTML += `
+                <div class="bg-blue-50 p-4 rounded-lg mt-4" id="new-lesson-form">
+                    <h5 class="font-semibold mb-3">Yangi dars qo'shish</h5>
+                    <form onsubmit="saveNewLesson(event, ${classId})" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kun:</label>
+                            <select id="new-day" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="1">Dushanba</option>
+                                <option value="2">Seshanba</option>
+                                <option value="3">Chorshanba</option>
+                                <option value="4">Payshanba</option>
+                                <option value="5">Juma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Vaqt:</label>
+                            <select id="new-time" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="08:00">08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fan:</label>
+                            <select id="new-subject" onchange="loadTeachersForSubject()" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Fanni tanlang...</option>
+                                ${classSubjects.map(subject => `<option value="${subject}">${subject}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">O'qituvchi:</label>
+                            <select id="new-teacher" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Avval fanni tanlang...</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-4">
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 mr-2">
+                                Saqlash
+                            </button>
+                            <button type="button" onclick="cancelNewLesson()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                                Bekor qilish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+        function loadTeachersForSubject() {
+            const selectedSubject = document.getElementById('new-subject').value;
+            const teacherSelect = document.getElementById('new-teacher');
+            
+            if (!selectedSubject) {
+                teacherSelect.innerHTML = '<option value="">Avval fanni tanlang...</option>';
+                return;
+            }
+            
+            const availableTeachers = teachers.filter(t => t.subjects.includes(selectedSubject));
+            
+            teacherSelect.innerHTML = '<option value="">O\'qituvchini tanlang...</option>' +
+                availableTeachers.map(t => `<option value="${t.full_name}">${t.full_name}</option>`).join('');
+        }
+
+        function saveNewLesson(event, classId) {
+            event.preventDefault();
+            
+            const dayNames = ['', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma'];
+            const dayId = parseInt(document.getElementById('new-day').value);
+            
+            const newLesson = {
+                day: dayId,
+                day_name: dayNames[dayId],
+                start_time: document.getElementById('new-time').value,
+                subject: document.getElementById('new-subject').value,
+                teacher: document.getElementById('new-teacher').value,
+                order: timetableData[classId].length + 1,
+                isNew: true
+            };
+            
+            if (!timetableData[classId]) {
+                timetableData[classId] = [];
+            }
+            
+            timetableData[classId].push(newLesson);
+            loadEditTimetable();
+        }
+
+        function cancelNewLesson() {
+            document.getElementById('new-lesson-form').remove();
+        }
+
+        function editLesson(classId, index) {
+            const lesson = timetableData[classId][index];
+            const classroom = classrooms.find(c => c.id == classId);
+            const classSubjects = getSubjectsForGrade(classroom.grade);
+            
+            const content = document.getElementById('edit-timetable-content');
+            content.innerHTML += `
+                <div class="bg-yellow-50 p-4 rounded-lg mt-4 border-2 border-yellow-300" id="edit-lesson-form">
+                    <h5 class="font-semibold mb-3 text-yellow-800">Darsni o'zgartirish</h5>
+                    <form onsubmit="saveEditedLesson(event, ${classId}, ${index})" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kun:</label>
+                            <select id="edit-day" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="1" ${lesson.day === 1 ? 'selected' : ''}>Dushanba</option>
+                                <option value="2" ${lesson.day === 2 ? 'selected' : ''}>Seshanba</option>
+                                <option value="3" ${lesson.day === 3 ? 'selected' : ''}>Chorshanba</option>
+                                <option value="4" ${lesson.day === 4 ? 'selected' : ''}>Payshanba</option>
+                                <option value="5" ${lesson.day === 5 ? 'selected' : ''}>Juma</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Vaqt:</label>
+                            <select id="edit-time" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="08:00" ${lesson.start_time === '08:00' ? 'selected' : ''}>08:00</option>
+                                <option value="09:00" ${lesson.start_time === '09:00' ? 'selected' : ''}>09:00</option>
+                                <option value="10:00" ${lesson.start_time === '10:00' ? 'selected' : ''}>10:00</option>
+                                <option value="11:00" ${lesson.start_time === '11:00' ? 'selected' : ''}>11:00</option>
+                                <option value="12:00" ${lesson.start_time === '12:00' ? 'selected' : ''}>12:00</option>
+                                <option value="13:00" ${lesson.start_time === '13:00' ? 'selected' : ''}>13:00</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fan:</label>
+                            <select id="edit-subject" onchange="loadEditTeachersForSubject()" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">Fanni tanlang...</option>
+                                ${classSubjects.map(subject => `<option value="${subject}" ${lesson.subject === subject ? 'selected' : ''}>${subject}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">O'qituvchi:</label>
+                            <select id="edit-teacher" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                                <option value="">O'qituvchini tanlang...</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-4">
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 mr-2">
+                                O'zgarishlarni saqlash
+                            </button>
+                            <button type="button" onclick="cancelEditLesson()" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+                                Bekor qilish
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            // Load teachers for the current subject
+            setTimeout(() => {
+                loadEditTeachersForSubject();
+                // Set the current teacher as selected
+                setTimeout(() => {
+                    const teacherSelect = document.getElementById('edit-teacher');
+                    for (let option of teacherSelect.options) {
+                        if (option.value === lesson.teacher) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }, 100);
+            }, 100);
+        }
+
+        function loadEditTeachersForSubject() {
+            const selectedSubject = document.getElementById('edit-subject').value;
+            const teacherSelect = document.getElementById('edit-teacher');
+            
+            if (!selectedSubject) {
+                teacherSelect.innerHTML = '<option value="">Avval fanni tanlang...</option>';
+                return;
+            }
+            
+            const availableTeachers = teachers.filter(t => t.subjects.includes(selectedSubject));
+            
+            teacherSelect.innerHTML = '<option value="">O\'qituvchini tanlang...</option>' +
+                availableTeachers.map(t => `<option value="${t.full_name}">${t.full_name}</option>`).join('');
+        }
+
+        function saveEditedLesson(event, classId, index) {
+            event.preventDefault();
+            
+            const dayNames = ['', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma'];
+            const dayId = parseInt(document.getElementById('edit-day').value);
+            
+            // Update the lesson
+            timetableData[classId][index] = {
+                ...timetableData[classId][index],
+                day: dayId,
+                day_name: dayNames[dayId],
+                start_time: document.getElementById('edit-time').value,
+                subject: document.getElementById('edit-subject').value,
+                teacher: document.getElementById('edit-teacher').value,
+                isNew: true // Mark as modified
+            };
+            
+            // Remove edit form and reload timetable
+            document.getElementById('edit-lesson-form').remove();
+            loadEditTimetable();
+            
+            alert('Dars muvaffaqiyatli o\'zgartirildi!');
+        }
+
+        function cancelEditLesson() {
+            const editForm = document.getElementById('edit-lesson-form');
+            if (editForm) {
+                editForm.remove();
+            }
+        }
+
+        function deleteLesson(classId, index) {
+            const lesson = timetableData[classId][index];
+            const classroom = classrooms.find(c => c.id == classId);
+            
+            // Show detailed confirmation dialog
+            const confirmMessage = `Quyidagi darsni butunlay o'chirishni xohlaysizmi?\n\n` +
+                `📚 Fan: ${lesson.subject}\n` +
+                `📅 Kun: ${lesson.day_name}\n` +
+                `⏰ Vaqt: ${lesson.start_time}\n` +
+                `👨‍🏫 O'qituvchi: ${lesson.teacher}\n` +
+                `🏫 Sinf: ${classroom.name}\n\n` +
+                `Bu amalni bekor qilib bo'lmaydi!`;
+            
+            if (confirm(confirmMessage)) {
+                // Remove the lesson from timetable data
+                timetableData[classId].splice(index, 1);
+                
+                // Update order numbers for remaining lessons
+                timetableData[classId].forEach((remainingLesson, idx) => {
+                    remainingLesson.order = idx + 1;
+                });
+                
+                // Reload the timetable display
+                loadEditTimetable();
+                
+                // Show success message
+                alert(`✅ "${lesson.subject}" darsi muvaffaqiyatli o'chirildi!\n\nQolgan darslar: ${timetableData[classId].length} ta`);
+            }
+        }
+
+        function getSubjectsForGrade(grade) {
+            const subjectsByGrade = {
+                1: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                2: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                3: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                4: ["Matematika", "O'zbek tili", "Ingliz tili", "Tabiatshunoslik", "Jismoniy tarbiya", "Tasviriy san'at", "Musiqa"],
+                5: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                6: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                7: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                8: ["Matematika", "O'zbek tili", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                9: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                10: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"],
+                11: ["Matematika", "O'zbek tili", "Adabiyot", "Ingliz tili", "Tarix", "Geografiya", "Fizika", "Kimyo", "Biologiya", "Jismoniy tarbiya", "Informatika"]
+            };
+            return subjectsByGrade[grade] || subjectsByGrade[5];
+        }
+
+        function showManageData() {
+            const content = document.getElementById('admin-content');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold mb-4">Ma'lumotlarni boshqarish</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">O'quvchilar</h4>
+                        <p class="text-2xl font-bold text-blue-600">${Object.values(studentsData).reduce((total, students) => total + students.length, 0)}</p>
+                        <p class="text-sm text-gray-600">Jami o'quvchilar soni</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">O'qituvchilar</h4>
+                        <p class="text-2xl font-bold text-green-600">${teachers.length}</p>
+                        <p class="text-sm text-gray-600">Jami o'qituvchilar soni</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h4 class="font-semibold mb-2">Sinflar</h4>
+                        <p class="text-2xl font-bold text-purple-600">${classrooms.length}</p>
+                        <p class="text-sm text-gray-600">Jami sinflar soni</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h4 class="font-semibold mb-3">Sinf bo'yicha o'quvchilar soni:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${classrooms.map(classroom => {
+                            const studentCount = studentsData[classroom.id] ? studentsData[classroom.id].length : 0;
+                            return `
+                                <div class="bg-white border rounded-lg p-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium">${classroom.name}</span>
+                                        <span class="text-lg font-bold text-indigo-600">${studentCount}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Video modal functions
+        let currentSlide = 0;
+        const totalSlides = 5;
+
+        function showVideoModal() {
+            document.getElementById('video-modal').classList.remove('hidden');
+            currentSlide = 0;
+            updateSlider();
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const container = document.getElementById('slider-container');
+            const translateX = -currentSlide * 100;
+            container.style.transform = `translateX(${translateX}%)`;
+            
+            // Update indicators
+            document.querySelectorAll('.slide-indicator').forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.remove('bg-opacity-50');
+                    indicator.classList.add('bg-opacity-100');
+                } else {
+                    indicator.classList.remove('bg-opacity-100');
+                    indicator.classList.add('bg-opacity-50');
+                }
+            });
+        }
+
+        // Auto-slide every 5 seconds
+        setInterval(() => {
+            if (!document.getElementById('video-modal').classList.contains('hidden')) {
+                nextSlide();
+            }
+        }, 5000);
+
+        // Phone number formatting
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.startsWith('998')) {
+                value = value.substring(3);
+            }
+            
+            if (value.length > 0) {
+                value = value.substring(0, 9);
+                let formatted = '+998';
+                if (value.length > 0) formatted += ' ' + value.substring(0, 2);
+                if (value.length > 2) formatted += ' ' + value.substring(2, 5);
+                if (value.length > 5) formatted += ' ' + value.substring(5, 7);
+                if (value.length > 7) formatted += ' ' + value.substring(7, 9);
+                input.value = formatted;
+            } else {
+                input.value = '+998 ';
+            }
+        }
+
+        // Add event listener for phone input
+        document.addEventListener('input', function(e) {
+            if (e.target.id === 'teacher-phone') {
+                formatPhoneNumber(e.target);
+            }
+        });
+
+        // Passport series uppercase
+        document.addEventListener('input', function(e) {
+            if (e.target.id === 'teacher-passport-series') {
+                e.target.value = e.target.value.toUpperCase();
+            }
+        });
+
+        // Global lesson management functions
+        function showAddLessonForm() {
+            document.getElementById('add-lesson-form').classList.remove('hidden');
+        }
+
+        function hideAddLessonForm() {
+            document.getElementById('add-lesson-form').classList.add('hidden');
+            document.getElementById('add-lesson-form').querySelector('form').reset();
+        }
+
+        function loadGlobalTeachersForSubject() {
+            const selectedSubject = document.getElementById('global-subject').value;
+            const teacherSelect = document.getElementById('global-teacher');
+            
+            if (!selectedSubject) {
+                teacherSelect.innerHTML = '<option value="">Avval fanni tanlang...</option>';
+                return;
+            }
+            
+            const availableTeachers = teachers.filter(t => t.subjects.includes(selectedSubject));
+            
+            teacherSelect.innerHTML = '<option value="">O\'qituvchini tanlang...</option>' +
+                availableTeachers.map(t => `<option value="${t.full_name}">${t.full_name}</option>`).join('');
+        }
+
+        function addNewLessonGlobal(event) {
+            event.preventDefault();
+            
+            const classId = parseInt(document.getElementById('global-class').value);
+            const dayNames = ['', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma'];
+            const dayId = parseInt(document.getElementById('global-day').value);
+            
+            const newLesson = {
+                day: dayId,
+                day_name: dayNames[dayId],
+                start_time: document.getElementById('global-time').value,
+                subject: document.getElementById('global-subject').value,
+                teacher: document.getElementById('global-teacher').value,
+                order: (timetableData[classId] ? timetableData[classId].length : 0) + 1,
+                isNew: true
+            };
+            
+            if (!timetableData[classId]) {
+                timetableData[classId] = [];
+            }
+            
+            timetableData[classId].push(newLesson);
+            hideAddLessonForm();
+            
+            // Refresh the edit timetable if the same class is selected
+            const selectedClassId = document.getElementById('edit-class-selector').value;
+            if (selectedClassId == classId) {
+                loadEditTimetable();
+            }
+            
+            alert('Yangi dars muvaffaqiyatli qo\'shildi!');
+        }
+
+        // Update addTeacher function to handle multiple subjects
+        function addTeacher(event) {
+            event.preventDefault();
+            const firstName = document.getElementById('teacher-firstname').value;
+            const lastName = document.getElementById('teacher-lastname').value;
+            const fullName = `${firstName} ${lastName}`;
+            
+            // Get selected subjects
+            const subjectSelect = document.getElementById('teacher-subjects');
+            const selectedSubjects = Array.from(subjectSelect.selectedOptions).map(option => option.value);
+            
+            const newTeacher = {
+                id: teachers.length + 1,
+                full_name: fullName,
+                email: `${firstName.toLowerCase()}@maktab.uz`,
+                subjects: selectedSubjects.join(', '),
+                age: parseInt(document.getElementById('teacher-age').value),
+                experience: parseInt(document.getElementById('teacher-experience').value),
+                phone: document.getElementById('teacher-phone').value,
+                passport: document.getElementById('teacher-passport-series').value + document.getElementById('teacher-passport-number').value,
+                isNew: true
+            };
+            
+            teachers.push(newTeacher);
+            
+            document.getElementById('teacher-success').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('teacher-success').classList.add('hidden');
+            }, 3000);
+            
+            // Reset form
+            event.target.reset();
+            // Reset phone field to default
+            document.getElementById('teacher-phone').value = '+998 ';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTeachers();
+            showSection('home');
+            
+            // Set default phone value
+            const phoneInput = document.getElementById('teacher-phone');
+            if (phoneInput) {
+                phoneInput.value = '+998 ';
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'988bf7d0779d4eff',t:'MTc1OTQ4OTU2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
